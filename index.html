@@ -466,10 +466,41 @@
                             <div class="control control-expanded">
                                 <input class="input" type="email" name="email" placeholder="Your best email&hellip;">
                             </div>
-							<div class="control">
-								<input id="emailInput" type="email" placeholder="Enter your email">
-								<a id="earlyAccessBtn" class="button button-primary button-block button-shadow" href="#">Earlty access</a>
-							</div>
+							<div id="emailDiv">
+								<form id="emailForm">
+								  <input type="email" id="emailInput" placeholder="Enter your email" required>
+								  <button type="submit">Submit</button>
+								</form>
+							  
+								<script>
+								  // Attach an event listener to the form
+								  document.getElementById('emailForm').addEventListener('submit', function(event) {
+									// Prevent the form from actually submitting
+									event.preventDefault();
+									
+									// Get the email value
+									const email = document.getElementById('emailInput').value;
+									
+									// Validate email (could be more robust)
+									if (email.includes('@')) {
+									  // Use fetch API to send data to the webhook
+									  fetch('https://hook.us1.make.com/a4w2swlet7dpkbsxrubivj91kgmopqbj', {
+										method: 'POST',
+										headers: {
+										  'Content-Type': 'application/json'
+										},
+										body: JSON.stringify({ email: email })
+									  })
+									  .then(response => response.json())
+									  .then(data => console.log('Data sent successfully:', data))
+									  .catch(error => console.error('Error:', error));
+									} else {
+									  alert('Please enter a valid email.');
+									}
+								  });
+								</script>
+							  </div>
+							  
 							
                         </div>
                     </div>
